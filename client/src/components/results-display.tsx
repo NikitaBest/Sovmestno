@@ -127,10 +127,10 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
 
       {/* Detailed Results */}
       <div className="space-y-4">
-        {compatibilityCategories.map((category) => {
-          const percentage = results[category.key];
+        {compatibilityCategories.map((category, index) => {
+          const percentage = results[category.key] as number;
           return (
-            <Card key={category.key} className="bg-white shadow-sm border border-gray-100">
+            <Card key={category.key} className="bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center">
@@ -144,7 +144,7 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
                     {percentage}%
                   </span>
                 </div>
-                <ProgressBar percentage={percentage} />
+                <AnimatedProgress percentage={percentage} delay={index * 200} />
               </CardContent>
             </Card>
           );
@@ -191,16 +191,35 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
       )}
 
       {/* Action Buttons */}
-      <div className="space-y-3 pt-4">
-        <Button
-          onClick={handleShare}
-          className="w-full telegram-gradient text-white py-4 px-6 rounded-xl font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 active:scale-[0.98]"
-        >
-          <span className="flex items-center justify-center">
-            <span className="mr-2">📤</span>
-            Поделиться результатом
-          </span>
-        </Button>
+      <div className="space-y-3 pt-6">
+        <div className="grid grid-cols-2 gap-3">
+          <Button
+            onClick={handleShare}
+            className="telegram-gradient text-white py-4 px-6 rounded-xl font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 active:scale-[0.98]"
+          >
+            <span className="flex items-center justify-center">
+              <span className="mr-2">📤</span>
+              Поделиться
+            </span>
+          </Button>
+          
+          <Button
+            onClick={() => {
+              const dataUrl = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(results))}`;
+              const link = document.createElement('a');
+              link.href = dataUrl;
+              link.download = 'compatibility-results.json';
+              link.click();
+            }}
+            variant="outline"
+            className="py-4 px-6 rounded-xl font-semibold text-base border-2 border-blue-200 text-blue-600 hover:bg-blue-50 transform hover:scale-[1.02] transition-all duration-200 active:scale-[0.98]"
+          >
+            <span className="flex items-center justify-center">
+              <span className="mr-2">💾</span>
+              Сохранить
+            </span>
+          </Button>
+        </div>
         
         <Button
           onClick={onRestart}
@@ -209,7 +228,7 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
         >
           <span className="flex items-center justify-center">
             <span className="mr-2">🔄</span>
-            Попробовать снова
+            Новый расчет
           </span>
         </Button>
       </div>
