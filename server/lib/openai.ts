@@ -6,12 +6,62 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR || "default_key"
 });
 
+// Generate test data for development when OpenAI API key is not available
+function generateTestCompatibilityData(
+  person1Date: string,
+  person1Time: string,
+  person2Date: string,
+  person2Time: string
+): CompatibilityResults {
+  // Use dates to generate deterministic but varied results
+  const seed = (person1Date + person1Time + person2Date + person2Time).split('').reduce((a, b) => {
+    a = ((a << 5) - a) + b.charCodeAt(0);
+    return a & a;
+  }, 0);
+  
+  const random = (min: number, max: number) => {
+    const x = Math.sin(seed) * 10000;
+    return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
+  };
+
+  const zodiac_compatibility = random(60, 95);
+  const elemental_compatibility = random(55, 90);
+  const numerological_compatibility = random(65, 88);
+  const emotional_compatibility = random(50, 85);
+  const intellectual_compatibility = random(70, 92);
+
+  const overall_compatibility = Math.round(
+    zodiac_compatibility * 0.3 +
+    elemental_compatibility * 0.2 +
+    numerological_compatibility * 0.2 +
+    emotional_compatibility * 0.2 +
+    intellectual_compatibility * 0.1
+  );
+
+  return {
+    zodiac_compatibility,
+    elemental_compatibility,
+    numerological_compatibility,
+    emotional_compatibility,
+    intellectual_compatibility,
+    overall_compatibility,
+  };
+}
+
 export async function calculateCompatibility(
   person1Date: string,
   person1Time: string,
   person2Date: string,
   person2Time: string
 ): Promise<CompatibilityResults> {
+  // Check if OpenAI API key is available
+  if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "default_key") {
+    console.log("Using test data for compatibility calculation (OpenAI API key not configured)");
+    // Simulate network delay for realistic UX
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    return generateTestCompatibilityData(person1Date, person1Time, person2Date, person2Time);
+  }
+
   const prompt = `You are an expert in astrology and numerology. Your task is to calculate the compatibility between two people based on their birth dates and times. The input data is:
 
 - Person 1: Date of birth = ${person1Date}, Time of birth = ${person1Time}
