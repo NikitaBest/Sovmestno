@@ -48,6 +48,13 @@ export const compatibilityResultsSchema = z.object({
   emotional_compatibility: z.number().min(0).max(100),
   intellectual_compatibility: z.number().min(0).max(100),
   overall_compatibility: z.number().min(0).max(100),
+  compatibility_message: z.string().optional(),
+  zodiac_signs: z.object({
+    person1: z.string(),
+    person2: z.string(),
+  }).optional(),
+  lucky_colors: z.array(z.string()).optional(),
+  best_activities: z.array(z.string()).optional(),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;

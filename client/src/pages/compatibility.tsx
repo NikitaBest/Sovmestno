@@ -69,15 +69,30 @@ export default function CompatibilityPage() {
           )}
 
           {currentScreen === "loading" && (
-            <div className="text-center py-12">
-              <div className="space-y-4">
-                <div className="w-16 h-16 mx-auto telegram-gradient rounded-full flex items-center justify-center animate-pulse">
-                  <span className="text-white text-2xl">🔮</span>
+            <div className="text-center py-12 animate-fade-in-up">
+              <div className="space-y-6">
+                <div className="relative">
+                  <div className="w-20 h-20 mx-auto telegram-gradient rounded-full flex items-center justify-center animate-bounce-in">
+                    <span className="text-white text-3xl">🔮</span>
+                  </div>
+                  <div className="absolute -top-2 -right-2 floating-heart">💫</div>
+                  <div className="absolute -bottom-2 -left-2 floating-heart" style={{ animationDelay: '1s' }}>✨</div>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800">Анализируем совместимость...</h3>
-                <p className="text-gray-600 text-sm">Изучаем ваши астрологические данные</p>
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                  <div className="telegram-gradient h-2 rounded-full animate-pulse" style={{ width: "60%" }}></div>
+                
+                <div className="space-y-3">
+                  <h3 className="text-xl font-semibold text-gray-800">Анализируем совместимость</h3>
+                  <div className="space-y-1">
+                    <p className="text-gray-600 text-sm">🌟 Изучаем зодиакальные знаки</p>
+                    <p className="text-gray-600 text-sm">🔮 Рассчитываем нумерологию</p>
+                    <p className="text-gray-600 text-sm">💫 Анализируем энергетику</p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div className="telegram-gradient h-3 rounded-full transition-all duration-1000" style={{ width: "85%" }}></div>
+                  </div>
+                  <p className="text-xs text-gray-500 loading-dots">Почти готово</p>
                 </div>
               </div>
             </div>

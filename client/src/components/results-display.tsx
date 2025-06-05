@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ProgressBar } from "./progress-bar";
+import { Badge } from "@/components/ui/badge";
+import { AnimatedProgress } from "./animated-progress";
 import { shareCompatibilityResults } from "@/lib/telegram";
 import type { CompatibilityResults } from "@shared/schema";
 
@@ -47,18 +48,82 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
     shareCompatibilityResults(results);
   };
 
+  const getCompatibilityLevel = (percentage: number) => {
+    if (percentage >= 80) return { level: "Превосходно", color: "bg-green-100 text-green-800" };
+    if (percentage >= 70) return { level: "Отлично", color: "bg-blue-100 text-blue-800" };
+    if (percentage >= 60) return { level: "Хорошо", color: "bg-yellow-100 text-yellow-800" };
+    return { level: "Средне", color: "bg-gray-100 text-gray-800" };
+  };
+
+  const compatibilityLevel = getCompatibilityLevel(results.overall_compatibility);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in-up">
       {/* Overall Compatibility Card */}
-      <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100">
-        <div className="text-center">
+      <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-pink-400 to-purple-400 opacity-10 rounded-full -mr-10 -mt-10"></div>
+        <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-400 opacity-10 rounded-full -ml-8 -mb-8"></div>
+        
+        <div className="text-center relative z-10">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Результаты совместимости</h2>
-          <div className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+          <div className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 animate-bounce-in">
             {results.overall_compatibility}%
           </div>
+          <Badge className={`mb-3 ${compatibilityLevel.color}`}>
+            {compatibilityLevel.level}
+          </Badge>
           <p className="text-gray-600 text-sm">Общая совместимость</p>
+          
+          {/* Floating hearts */}
+          {results.overall_compatibility >= 75 && (
+            <>
+              <div className="absolute top-4 left-4 floating-heart">💕</div>
+              <div className="absolute top-6 right-6 floating-heart" style={{ animationDelay: '0.5s' }}>💖</div>
+              <div className="absolute bottom-8 left-8 floating-heart" style={{ animationDelay: '1s' }}>💝</div>
+            </>
+          )}
         </div>
       </div>
+
+      {/* Compatibility Message */}
+      {results.compatibility_message && (
+        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
+          <CardContent className="p-5">
+            <div className="flex items-start">
+              <span className="text-2xl mr-3 mt-1">💫</span>
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-2">Астрологическое заключение</h4>
+                <p className="text-gray-700 text-sm leading-relaxed">{results.compatibility_message}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Zodiac Signs */}
+      {results.zodiac_signs && (
+        <Card className="bg-white shadow-sm border border-gray-100">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between">
+              <div className="text-center flex-1">
+                <div className="text-3xl mb-2">⭐</div>
+                <p className="text-sm text-gray-500">Ваш знак</p>
+                <p className="font-semibold text-gray-800">{results.zodiac_signs.person1}</p>
+              </div>
+              <div className="mx-4">
+                <div className="w-8 h-8 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center">
+                  <span className="text-white text-lg">💝</span>
+                </div>
+              </div>
+              <div className="text-center flex-1">
+                <div className="text-3xl mb-2">✨</div>
+                <p className="text-sm text-gray-500">Знак партнера</p>
+                <p className="font-semibold text-gray-800">{results.zodiac_signs.person2}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Detailed Results */}
       <div className="space-y-4">
@@ -85,6 +150,45 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
           );
         })}
       </div>
+
+      {/* Lucky Colors */}
+      {results.lucky_colors && results.lucky_colors.length > 0 && (
+        <Card className="bg-white shadow-sm border border-gray-100">
+          <CardContent className="p-5">
+            <div className="flex items-center mb-3">
+              <span className="text-2xl mr-3">🎨</span>
+              <h4 className="font-medium text-gray-800">Счастливые цвета</h4>
+            </div>
+            <div className="flex gap-2">
+              {results.lucky_colors.map((color, index) => (
+                <Badge key={index} variant="secondary" className="bg-purple-100 text-purple-800">
+                  {color}
+                </Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Best Activities */}
+      {results.best_activities && results.best_activities.length > 0 && (
+        <Card className="bg-white shadow-sm border border-gray-100">
+          <CardContent className="p-5">
+            <div className="flex items-center mb-3">
+              <span className="text-2xl mr-3">🌟</span>
+              <h4 className="font-medium text-gray-800">Рекомендуемые активности</h4>
+            </div>
+            <div className="space-y-2">
+              {results.best_activities.map((activity, index) => (
+                <div key={index} className="flex items-center p-2 bg-gray-50 rounded-lg">
+                  <span className="text-pink-500 mr-2">•</span>
+                  <p className="text-sm text-gray-700">{activity}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Action Buttons */}
       <div className="space-y-3 pt-4">

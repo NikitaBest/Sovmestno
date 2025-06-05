@@ -12,7 +12,12 @@ function generateTestCompatibilityData(
   person1Time: string,
   person2Date: string,
   person2Time: string
-): CompatibilityResults {
+): CompatibilityResults & { 
+  compatibility_message: string;
+  zodiac_signs: { person1: string; person2: string };
+  lucky_colors: string[];
+  best_activities: string[];
+} {
   // Use dates to generate deterministic but varied results
   const seed = (person1Date + person1Time + person2Date + person2Time).split('').reduce((a, b) => {
     a = ((a << 5) - a) + b.charCodeAt(0);
@@ -20,7 +25,7 @@ function generateTestCompatibilityData(
   }, 0);
   
   const random = (min: number, max: number) => {
-    const x = Math.sin(seed) * 10000;
+    const x = Math.sin(Math.abs(seed) + min) * 10000;
     return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
   };
 
@@ -38,6 +43,46 @@ function generateTestCompatibilityData(
     intellectual_compatibility * 0.1
   );
 
+  // Generate zodiac signs based on dates
+  const zodiacSigns = ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"];
+  const person1Sign = zodiacSigns[Math.abs(seed) % zodiacSigns.length];
+  const person2Sign = zodiacSigns[Math.abs(seed + 1) % zodiacSigns.length];
+
+  // Generate compatibility message based on overall score
+  let compatibility_message = "";
+  if (overall_compatibility >= 80) {
+    compatibility_message = "Невероятная связь! Вы созданы друг для друга. Ваши энергии гармонично дополняют друг друга.";
+  } else if (overall_compatibility >= 70) {
+    compatibility_message = "Отличная совместимость! У вас есть прочная основа для долгих отношений.";
+  } else if (overall_compatibility >= 60) {
+    compatibility_message = "Хорошая совместимость. С взаимным пониманием ваши отношения будут процветать.";
+  } else {
+    compatibility_message = "Средняя совместимость. Потребуется работа над отношениями, но это возможно.";
+  }
+
+  // Generate lucky colors
+  const colors = ["Синий", "Розовый", "Золотой", "Зеленый", "Фиолетовый", "Красный", "Серебряный"];
+  const lucky_colors = [
+    colors[Math.abs(seed) % colors.length],
+    colors[Math.abs(seed + 2) % colors.length]
+  ];
+
+  // Generate best activities
+  const activities = [
+    "Романтические ужины при свечах",
+    "Путешествия в новые места",
+    "Занятия творчеством вместе",
+    "Прогулки под звездами",
+    "Изучение новых языков",
+    "Готовка экзотических блюд",
+    "Танцы"
+  ];
+  const best_activities = [
+    activities[Math.abs(seed) % activities.length],
+    activities[Math.abs(seed + 3) % activities.length],
+    activities[Math.abs(seed + 5) % activities.length]
+  ];
+
   return {
     zodiac_compatibility,
     elemental_compatibility,
@@ -45,6 +90,10 @@ function generateTestCompatibilityData(
     emotional_compatibility,
     intellectual_compatibility,
     overall_compatibility,
+    compatibility_message,
+    zodiac_signs: { person1: person1Sign, person2: person2Sign },
+    lucky_colors,
+    best_activities,
   };
 }
 
