@@ -1,21 +1,19 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { compatibilityRequestSchema, type CompatibilityRequest } from "@shared/schema";
 import { getTelegramUserId } from "@/lib/telegram";
 
-interface CompatibilityFormProps {
+interface EnhancedFormProps {
   onSubmit: (data: CompatibilityRequest) => Promise<void>;
   isLoading: boolean;
   error?: string;
 }
 
-export function CompatibilityForm({ onSubmit, isLoading, error }: CompatibilityFormProps) {
+export function EnhancedForm({ onSubmit, isLoading, error }: EnhancedFormProps) {
   const form = useForm<CompatibilityRequest>({
     resolver: zodResolver(compatibilityRequestSchema),
     defaultValues: {
@@ -80,21 +78,21 @@ export function CompatibilityForm({ onSubmit, isLoading, error }: CompatibilityF
                 </div>
               </div>
               
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <FormField
                   control={form.control}
                   name="person1Date"
                   render={({ field }) => (
-                    <FormItem className="relative">
-                      <FormLabel className="absolute -top-2 left-3 bg-white px-2 text-xs text-gray-500 font-medium">
-                        Дата рождения
+                    <FormItem>
+                      <FormLabel className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
+                        📅 Дата рождения
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           placeholder="ДД.ММ.ГГГГ"
                           maxLength={10}
-                          className="p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
+                          className="p-5 border-2 border-gray-100 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-300 transition-all duration-300 text-base bg-gray-50 hover:bg-white font-medium"
                           onChange={(e) => {
                             const formatted = formatDateInput(e.target.value);
                             field.onChange(formatted);
@@ -110,16 +108,16 @@ export function CompatibilityForm({ onSubmit, isLoading, error }: CompatibilityF
                   control={form.control}
                   name="person1Time"
                   render={({ field }) => (
-                    <FormItem className="relative">
-                      <FormLabel className="absolute -top-2 left-3 bg-white px-2 text-xs text-gray-500 font-medium">
-                        Время рождения
+                    <FormItem>
+                      <FormLabel className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
+                        🕐 Время рождения
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           placeholder="ЧЧ:ММ"
                           maxLength={5}
-                          className="p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
+                          className="p-5 border-2 border-gray-100 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-300 transition-all duration-300 text-base bg-gray-50 hover:bg-white font-medium"
                           onChange={(e) => {
                             const formatted = formatTimeInput(e.target.value);
                             field.onChange(formatted);
@@ -135,30 +133,33 @@ export function CompatibilityForm({ onSubmit, isLoading, error }: CompatibilityF
           </Card>
 
           {/* Person 2 Data */}
-          <Card className="bg-white shadow-sm border border-gray-100">
-            <CardContent className="p-6">
-              <div className="flex items-center mb-4">
-                <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-pink-600 font-semibold">2</span>
+          <Card className="neo-card hover-lift border-0">
+            <CardContent className="p-8">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 cosmic-gradient rounded-2xl flex items-center justify-center mr-4">
+                  <span className="text-white font-bold text-lg">💕</span>
                 </div>
-                <h3 className="text-lg font-medium text-gray-800">Данные партнера</h3>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800">Данные партнера</h3>
+                  <p className="text-gray-500 text-sm">Информация о вашей второй половинке</p>
+                </div>
               </div>
               
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <FormField
                   control={form.control}
                   name="person2Date"
                   render={({ field }) => (
-                    <FormItem className="relative">
-                      <FormLabel className="absolute -top-2 left-3 bg-white px-2 text-xs text-gray-500 font-medium">
-                        Дата рождения
+                    <FormItem>
+                      <FormLabel className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
+                        📅 Дата рождения
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           placeholder="ДД.ММ.ГГГГ"
                           maxLength={10}
-                          className="p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
+                          className="p-5 border-2 border-gray-100 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-300 transition-all duration-300 text-base bg-gray-50 hover:bg-white font-medium"
                           onChange={(e) => {
                             const formatted = formatDateInput(e.target.value);
                             field.onChange(formatted);
@@ -174,16 +175,16 @@ export function CompatibilityForm({ onSubmit, isLoading, error }: CompatibilityF
                   control={form.control}
                   name="person2Time"
                   render={({ field }) => (
-                    <FormItem className="relative">
-                      <FormLabel className="absolute -top-2 left-3 bg-white px-2 text-xs text-gray-500 font-medium">
-                        Время рождения
+                    <FormItem>
+                      <FormLabel className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
+                        🕐 Время рождения
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           placeholder="ЧЧ:ММ"
                           maxLength={5}
-                          className="p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
+                          className="p-5 border-2 border-gray-100 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-300 transition-all duration-300 text-base bg-gray-50 hover:bg-white font-medium"
                           onChange={(e) => {
                             const formatted = formatTimeInput(e.target.value);
                             field.onChange(formatted);
@@ -200,10 +201,10 @@ export function CompatibilityForm({ onSubmit, isLoading, error }: CompatibilityF
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+            <div className="bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 text-red-700 px-6 py-4 rounded-2xl text-sm">
               <div className="flex items-center">
-                <span className="mr-2">⚠️</span>
-                <span>{error}</span>
+                <span className="mr-3 text-lg">⚠️</span>
+                <span className="font-medium">{error}</span>
               </div>
             </div>
           )}
@@ -212,11 +213,11 @@ export function CompatibilityForm({ onSubmit, isLoading, error }: CompatibilityF
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full telegram-gradient text-white py-4 px-6 rounded-xl font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full magic-gradient text-white py-6 px-8 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transform hover:scale-[1.02] transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="flex items-center justify-center">
-              <span className="mr-2">✨</span>
-              {isLoading ? "Анализируем..." : "Рассчитать совместимость"}
+              <span className="mr-3 text-xl">✨</span>
+              {isLoading ? "Анализируем магию..." : "Раскрыть тайны совместимости"}
             </span>
           </Button>
         </form>

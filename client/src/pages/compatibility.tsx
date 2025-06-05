@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { CompatibilityForm } from "@/components/compatibility-form";
+import { EnhancedForm } from "@/components/enhanced-form";
 import { ResultsDisplay } from "@/components/results-display";
 import { apiRequest } from "@/lib/queryClient";
 import { initTelegramWebApp } from "@/lib/telegram";
@@ -46,22 +46,28 @@ export default function CompatibilityPage() {
   };
 
   return (
-    <div className="min-h-screen pb-4">
-      <div className="max-w-md mx-auto bg-white min-h-screen">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)' }}>
+      <div className="max-w-md mx-auto min-h-screen">
         {/* Header */}
-        <header className="telegram-gradient text-white p-4 sticky top-0 z-10 shadow-lg">
+        <header className="magic-gradient text-white p-6 sticky top-0 z-10 shadow-2xl">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-semibold">💫 Совместимость</h1>
-            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-              <span className="text-sm">⚡</span>
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                <span className="text-xl">🔮</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold">Астро-Совместимость</h1>
+                <p className="text-white/80 text-xs">Узнайте свою судьбу</p>
+              </div>
             </div>
+            <div className="floating-heart">✨</div>
           </div>
         </header>
 
         {/* Main Content */}
-        <main className="p-4">
+        <main className="p-6" style={{ background: 'linear-gradient(180deg, rgba(248, 250, 252, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%)' }}>
           {currentScreen === "input" && (
-            <CompatibilityForm
+            <EnhancedForm
               onSubmit={handleSubmit}
               isLoading={compatibilityMutation.isPending}
               error={error}
