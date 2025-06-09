@@ -54,12 +54,12 @@ export function EnhancedForm({ onSubmit, isLoading, error }: EnhancedFormProps) 
       <div className="aurora-gradient p-8 rounded-3xl glass-card hover-lift">
         <div className="text-center">
           <div className="relative mb-4">
-            <div className="text-5xl mb-3">🌟</div>
-            <div className="absolute -top-2 -right-2 floating-heart">💫</div>
-            <div className="absolute -bottom-2 -left-2 floating-heart" style={{ animationDelay: '1s' }}>✨</div>
+            <div className="text-5xl mb-3 floating-element">🌟</div>
+            <div className="absolute -top-2 -right-2 floating-element" style={{ animationDelay: '1s' }}>💫</div>
+            <div className="absolute -bottom-2 -left-2 floating-element" style={{ animationDelay: '2s' }}>✨</div>
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-3">Откройте тайны совместимости</h2>
-          <p className="text-gray-600 leading-relaxed">Узнайте, что говорят звезды о ваших отношениях через астрологию и нумерологию</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-3">Узнайте совместимость</h2>
+          <p className="text-gray-600 leading-relaxed">Что говорят звезды о ваших отношениях через астрологию и нумерологию</p>
         </div>
       </div>
 
@@ -69,8 +69,8 @@ export function EnhancedForm({ onSubmit, isLoading, error }: EnhancedFormProps) 
           <Card className="neo-card hover-lift border-0">
             <CardContent className="p-8">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 magic-gradient rounded-2xl flex items-center justify-center mr-4">
-                  <span className="text-white font-bold text-lg">👤</span>
+                <div className="w-12 h-12 magic-gradient rounded-2xl flex items-center justify-center mr-4 pulse-glow">
+                  <span className="text-white font-bold text-lg floating-element">👤</span>
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-800">Ваши данные</h3>
@@ -92,7 +92,7 @@ export function EnhancedForm({ onSubmit, isLoading, error }: EnhancedFormProps) 
                           {...field}
                           placeholder="ДД.ММ.ГГГГ"
                           maxLength={10}
-                          className="p-5 border-2 border-gray-100 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-300 transition-all duration-300 text-base bg-gray-50 hover:bg-white font-medium"
+                          className="modern-input p-5 rounded-2xl text-base font-medium"
                           onChange={(e) => {
                             const formatted = formatDateInput(e.target.value);
                             field.onChange(formatted);
@@ -117,7 +117,7 @@ export function EnhancedForm({ onSubmit, isLoading, error }: EnhancedFormProps) 
                           {...field}
                           placeholder="ЧЧ:ММ"
                           maxLength={5}
-                          className="p-5 border-2 border-gray-100 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-300 transition-all duration-300 text-base bg-gray-50 hover:bg-white font-medium"
+                          className="modern-input p-5 rounded-2xl text-base font-medium"
                           onChange={(e) => {
                             const formatted = formatTimeInput(e.target.value);
                             field.onChange(formatted);
@@ -136,8 +136,8 @@ export function EnhancedForm({ onSubmit, isLoading, error }: EnhancedFormProps) 
           <Card className="neo-card hover-lift border-0">
             <CardContent className="p-8">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 cosmic-gradient rounded-2xl flex items-center justify-center mr-4">
-                  <span className="text-white font-bold text-lg">💕</span>
+                <div className="w-12 h-12 cosmic-gradient rounded-2xl flex items-center justify-center mr-4 pulse-glow">
+                  <span className="text-white font-bold text-lg floating-element">💕</span>
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-800">Данные партнера</h3>
@@ -159,7 +159,7 @@ export function EnhancedForm({ onSubmit, isLoading, error }: EnhancedFormProps) 
                           {...field}
                           placeholder="ДД.ММ.ГГГГ"
                           maxLength={10}
-                          className="p-5 border-2 border-gray-100 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-300 transition-all duration-300 text-base bg-gray-50 hover:bg-white font-medium"
+                          className="modern-input p-5 rounded-2xl text-base font-medium"
                           onChange={(e) => {
                             const formatted = formatDateInput(e.target.value);
                             field.onChange(formatted);
@@ -184,7 +184,7 @@ export function EnhancedForm({ onSubmit, isLoading, error }: EnhancedFormProps) 
                           {...field}
                           placeholder="ЧЧ:ММ"
                           maxLength={5}
-                          className="p-5 border-2 border-gray-100 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-300 transition-all duration-300 text-base bg-gray-50 hover:bg-white font-medium"
+                          className="modern-input p-5 rounded-2xl text-base font-medium"
                           onChange={(e) => {
                             const formatted = formatTimeInput(e.target.value);
                             field.onChange(formatted);
@@ -213,10 +213,10 @@ export function EnhancedForm({ onSubmit, isLoading, error }: EnhancedFormProps) 
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full magic-gradient text-white py-6 px-8 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transform hover:scale-[1.02] transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="modern-button w-full text-white py-6 px-8 rounded-2xl font-bold text-lg"
           >
             <span className="flex items-center justify-center">
-              <span className="mr-3 text-xl">✨</span>
+              <span className="mr-3 text-xl floating-element">✨</span>
               {isLoading ? "Анализируем магию..." : "Раскрыть тайны совместимости"}
             </span>
           </Button>

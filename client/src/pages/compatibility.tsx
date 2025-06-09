@@ -56,8 +56,8 @@ export default function CompatibilityPage() {
                 <span className="text-xl">🔮</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold">Астро-Совместимость</h1>
-                <p className="text-white/80 text-xs">Узнайте свою судьбу</p>
+                <h1 className="text-xl font-bold">Совместимость</h1>
+                <p className="text-white/80 text-xs">Узнай свою пару</p>
               </div>
             </div>
             <div className="floating-heart">✨</div>
