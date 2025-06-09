@@ -74,6 +74,21 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
           </Badge>
           <p className="text-gray-600 text-sm">Общая совместимость</p>
           
+          {/* Zodiac Signs Display */}
+          {results.zodiac_signs && (
+            <div className="mt-4 flex justify-center items-center gap-4">
+              <div className="text-center">
+                <div className="text-2xl mb-1">👤</div>
+                <div className="font-medium text-gray-800">{results.zodiac_signs.person1}</div>
+              </div>
+              <div className="text-2xl">❤️</div>
+              <div className="text-center">
+                <div className="text-2xl mb-1">👤</div>
+                <div className="font-medium text-gray-800">{results.zodiac_signs.person2}</div>
+              </div>
+            </div>
+          )}
+          
           {/* Floating hearts */}
           {results.overall_compatibility >= 75 && (
             <>

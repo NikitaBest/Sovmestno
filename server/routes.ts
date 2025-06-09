@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { compatibilityRequestSchema, type CompatibilityResults } from "@shared/schema";
-import { calculateCompatibility } from "./lib/openai";
+import { calculateCompatibility } from "./lib/llm";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Calculate compatibility endpoint

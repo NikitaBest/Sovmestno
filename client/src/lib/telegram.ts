@@ -51,7 +51,11 @@ export function getTelegramUserId(): string | undefined {
 export function shareCompatibilityResults(results: any): void {
   const tg = getTelegramWebApp();
   if (tg && results) {
-    const message = `🎯 Наша совместимость: ${results.overall_compatibility}%\n\n` +
+    const zodiacSignsText = results.zodiac_signs 
+      ? `\n♈ Знаки зодиака: ${results.zodiac_signs.person1} + ${results.zodiac_signs.person2}\n`
+      : '\n';
+      
+    const message = `🎯 Наша совместимость: ${results.overall_compatibility}%${zodiacSignsText}\n` +
                   `♈ Зодиакальная: ${results.zodiac_compatibility}%\n` +
                   `🌟 По стихиям: ${results.elemental_compatibility}%\n` +
                   `🔢 Нумерологическая: ${results.numerological_compatibility}%\n` +
