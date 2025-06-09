@@ -78,11 +78,13 @@ export default function CompatibilityPage() {
             <div className="text-center py-12 animate-fade-in-up">
               <div className="space-y-6">
                 <div className="relative">
-                  <div className="w-20 h-20 mx-auto telegram-gradient rounded-full flex items-center justify-center animate-bounce-in">
-                    <span className="text-white text-3xl">🔮</span>
+                  <div className="w-12 h-12 cosmic-gradient rounded-2xl flex items-center justify-center pulse-glow">
+                    <div className="relative w-8 h-8">
+                      <span className="absolute top-0 left-0 text-lg floating-element" style={{ animationDelay: '0s' }}>⭐</span>
+                      <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg floating-element" style={{ animationDelay: '0.5s' }}>✨</span>
+                      <span className="absolute bottom-0 right-0 text-lg floating-element" style={{ animationDelay: '1s' }}>🌟</span>
+                    </div>
                   </div>
-                  <div className="absolute -top-2 -right-2 floating-heart">💫</div>
-                  <div className="absolute -bottom-2 -left-2 floating-heart" style={{ animationDelay: '1s' }}>✨</div>
                 </div>
                 
                 <div className="space-y-3">

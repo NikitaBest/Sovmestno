@@ -217,7 +217,7 @@ export function EnhancedForm({ onSubmit, isLoading, error }: EnhancedFormProps) 
           >
             <span className="flex items-center justify-center">
               <span className="mr-3 text-xl floating-element">✨</span>
-              {isLoading ? "Анализируем магию..." : "Раскрыть тайны совместимости"}
+              {isLoading ? "Анализируем магию..." : "Узнай совместимость"}
             </span>
           </Button>
         </form>
