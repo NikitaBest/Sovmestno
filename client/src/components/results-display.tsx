@@ -207,6 +207,14 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
 
       {/* Action Buttons */}
       <div className="space-y-3 pt-6">
+        {/* Detailed Analysis Button */}
+        <Button
+          onClick={() => window.open('https://t.me/your_bot_username', '_blank')}
+          className="vibrant-gradient w-full text-white py-7 px-8 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-3xl transform hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]"
+        >
+          Хочу подробнее
+        </Button>
+
         <div className="grid grid-cols-2 gap-3">
           <Button
             onClick={handleShare}
