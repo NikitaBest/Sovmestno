@@ -223,7 +223,7 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
       )}
 
       {/* Best Dates for Activities */}
-      {results.best_dates && results.best_dates.length > 0 && (
+      {Array.isArray(results.best_dates) && (
         <Card className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-100">
           <CardContent className="p-6">
             <div className="flex items-start">
@@ -231,8 +231,8 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
               <div>
                 <h4 className="font-semibold text-gray-800 mb-3">Лучшие даты для совместных дел</h4>
                 <div className="text-gray-700 text-sm mb-2">
-                  {results.best_dates.map((date, idx) => (
-                    <span key={date} className="inline-block mr-2 font-medium text-blue-700">{date}{idx < results.best_dates.length - 1 ? ',' : ''}</span>
+                  {results.best_dates?.map((date, idx) => (
+                    <span key={date} className="inline-block mr-2 font-medium text-blue-700">{date}{idx < (results.best_dates?.length ?? 0) - 1 ? ',' : ''}</span>
                   ))}
                 </div>
                 {results.best_dates_comment && (
@@ -263,35 +263,15 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
 
       {/* Action Buttons */}
       <div className="space-y-3 pt-6">
-        <div className="grid grid-cols-2 gap-3">
-          <Button
-            onClick={handleShare}
-            className="telegram-gradient text-white py-4 px-6 rounded-xl font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 active:scale-[0.98]"
-          >
-            <span className="flex items-center justify-center">
-              <span className="mr-2">📤</span>
-              Поделиться
-            </span>
-          </Button>
-          
-          <Button
-            onClick={() => {
-              const dataUrl = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(results))}`;
-              const link = document.createElement('a');
-              link.href = dataUrl;
-              link.download = 'compatibility-results.json';
-              link.click();
-            }}
-            variant="outline"
-            className="py-4 px-6 rounded-xl font-semibold text-base border-2 border-blue-200 text-blue-600 hover:bg-blue-50 transform hover:scale-[1.02] transition-all duration-200 active:scale-[0.98]"
-          >
-            <span className="flex items-center justify-center">
-              <span className="mr-2">💾</span>
-              Сохранить
-            </span>
-          </Button>
-        </div>
-        
+        <Button
+          onClick={handleShare}
+          className="w-full telegram-gradient text-white py-4 px-6 rounded-xl font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 active:scale-[0.98]"
+        >
+          <span className="flex items-center justify-center">
+            <span className="mr-2">📤</span>
+            Поделиться
+          </span>
+        </Button>
         <Button
           onClick={onRestart}
           variant="secondary"
