@@ -45,7 +45,14 @@ const compatibilityCategories = [
 
 export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
   const handleShare = () => {
-    shareCompatibilityResults(results);
+    const text = encodeURIComponent(
+      `🎯 Наша совместимость: ${results.overall_compatibility}%\n` +
+      `Знаки: ${results.zodiac_signs?.person1 ?? ''} + ${results.zodiac_signs?.person2 ?? ''}\n` +
+      (results.compatibility_message ? `\n${results.compatibility_message}\n` : '') +
+      (results.detailed_description ? `\n${results.detailed_description}\n` : '')
+    );
+    const url = `https://t.me/share/url?text=${text}`;
+    window.open(url, "_blank");
   };
 
   const getCompatibilityLevel = (percentage: number) => {
