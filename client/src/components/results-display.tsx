@@ -205,16 +205,25 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
         </Card>
       )}
 
+      {/* Detailed Compatibility Description */}
+      {results.detailed_description && (
+        <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-100">
+          <CardContent className="p-6">
+            <div className="flex items-start">
+              <span className="text-2xl mr-3 mt-1">📝</span>
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-3">Подробный анализ совместимости</h4>
+                <div className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+                  {results.detailed_description}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Action Buttons */}
       <div className="space-y-3 pt-6">
-        {/* Detailed Analysis Button */}
-        <Button
-          onClick={() => window.open('https://t.me/your_bot_username', '_blank')}
-          className="vibrant-gradient w-full text-white py-7 px-8 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-3xl transform hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]"
-        >
-          Хочу подробнее
-        </Button>
-
         <div className="grid grid-cols-2 gap-3">
           <Button
             onClick={handleShare}

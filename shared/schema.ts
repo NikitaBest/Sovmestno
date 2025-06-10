@@ -34,9 +34,27 @@ export const insertCompatibilitySessionSchema = createInsertSchema(compatibility
 });
 
 export const compatibilityRequestSchema = z.object({
-  person1Date: z.string().regex(/^\d{2}\.\d{2}\.\d{4}$/, "Date must be in DD.MM.YYYY format"),
+  person1Date: z.string()
+    .regex(/^\d{2}\.\d{2}\.\d{4}$/, "Date must be in DD.MM.YYYY format")
+    .refine((date) => {
+      const [day, month, year] = date.split('.').map(Number);
+      const dateObj = new Date(year, month - 1, day);
+      return dateObj.getDate() === day && 
+             dateObj.getMonth() === month - 1 && 
+             dateObj.getFullYear() === year &&
+             dateObj <= new Date();
+    }, "Invalid date or date in the future"),
   person1Time: z.string().regex(/^\d{2}:\d{2}$/, "Time must be in HH:MM format"),
-  person2Date: z.string().regex(/^\d{2}\.\d{2}\.\d{4}$/, "Date must be in DD.MM.YYYY format"),
+  person2Date: z.string()
+    .regex(/^\d{2}\.\d{2}\.\d{4}$/, "Date must be in DD.MM.YYYY format")
+    .refine((date) => {
+      const [day, month, year] = date.split('.').map(Number);
+      const dateObj = new Date(year, month - 1, day);
+      return dateObj.getDate() === day && 
+             dateObj.getMonth() === month - 1 && 
+             dateObj.getFullYear() === year &&
+             dateObj <= new Date();
+    }, "Invalid date or date in the future"),
   person2Time: z.string().regex(/^\d{2}:\d{2}$/, "Time must be in HH:MM format"),
   telegramUserId: z.string().optional(),
 });
@@ -49,6 +67,7 @@ export const compatibilityResultsSchema = z.object({
   intellectual_compatibility: z.number().min(0).max(100),
   overall_compatibility: z.number().min(0).max(100),
   compatibility_message: z.string().optional(),
+  detailed_description: z.string().optional(),
   zodiac_signs: z.object({
     person1: z.string(),
     person2: z.string(),

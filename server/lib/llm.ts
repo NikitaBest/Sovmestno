@@ -1,7 +1,24 @@
 import type { CompatibilityResults } from "@shared/schema";
 import JSON5 from "json5";
 
-// Removed generateTestCompatibilityData function
+function getZodiacSign(date: string): string {
+  const [day, month] = date.split('.').map(Number);
+  
+  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "Овен";
+  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "Телец";
+  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "Близнецы";
+  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "Рак";
+  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "Лев";
+  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "Дева";
+  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "Весы";
+  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "Скорпион";
+  if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "Стрелец";
+  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "Козерог";
+  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "Водолей";
+  if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return "Рыбы";
+  
+  return "Неизвестно";
+}
 
 export async function calculateCompatibility(
   person1Date: string,
@@ -11,24 +28,14 @@ export async function calculateCompatibility(
 ): Promise<CompatibilityResults> {
   console.log("Attempting to calculate compatibility using LLM7 API...");
   
+  // Определяем знаки зодиака на сервере
+  const person1ZodiacSign = getZodiacSign(person1Date);
+  const person2ZodiacSign = getZodiacSign(person2Date);
+  
   const prompt = `Рассчитай совместимость между двумя людьми на основе их дат и времени рождения. Входные данные:
 
-- Человек 1: Дата рождения = ${person1Date}, Время рождения = ${person1Time}
-- Человек 2: Дата рождения = ${person2Date}, Время рождения = ${person2Time}
-
-Определи знаки зодиака для обоих людей, используя следующие границы дат:
-- Овен: 21 марта - 19 апреля
-- Телец: 20 апреля - 20 мая
-- Близнецы: 21 мая - 20 июня
-- Рак: 21 июня - 22 июля
-- Лев: 23 июля - 22 августа
-- Дева: 23 августа - 22 сентября
-- Весы: 23 сентября - 22 октября
-- Скорпион: 23 октября - 21 ноября
-- Стрелец: 22 ноября - 21 декабря
-- Козерог: 22 декабря - 19 января
-- Водолей: 20 января - 18 февраля
-- Рыбы: 19 февраля - 20 марта
+- Человек 1: Дата рождения = ${person1Date}, Время рождения = ${person1Time}, Знак зодиака = ${person1ZodiacSign}
+- Человек 2: Дата рождения = ${person2Date}, Время рождения = ${person2Time}, Знак зодиака = ${person2ZodiacSign}
 
 Рассчитай совместимость по следующим категориям:
 1. Совместимость по знакам зодиака (на основе знаков зодиака, вес 30%)
@@ -37,15 +44,20 @@ export async function calculateCompatibility(
 4. Эмоциональная совместимость (на основе времени рождения или асцендента, вес 20%)
 5. Интеллектуальная совместимость (на основе знаков зодиака или других факторов, вес 10%)
 
+Для каждой категории предоставь подробное описание совместимости, объясняющее сильные и слабые стороны пары в этой области.
+
 Предоставь результат в следующем JSON формате:
 {
-  "zodiac_signs": { "person1": "<знак зодиака>", "person2": "<знак зодиака>" },
   "zodiac_compatibility": <процент>,
   "elemental_compatibility": <процент>,
   "numerological_compatibility": <процент>,
   "emotional_compatibility": <процент>,
   "intellectual_compatibility": <процент>,
-  "overall_compatibility": <взвешенный средний процент>
+  "overall_compatibility": <взвешенный средний процент>,
+  "compatibility_message": "<краткое общее описание совместимости>",
+  "detailed_description": "<подробное описание совместимости, включая анализ каждой категории>",
+  "lucky_colors": ["<цвет1>", "<цвет2>", "<цвет3>"],
+  "best_activities": ["<активность1>", "<активность2>", "<активность3>"]
 }
 
 Пожалуйста, верни только JSON-объект в одну строку, без пояснений и лишнего текста.`;
@@ -130,8 +142,8 @@ export async function calculateCompatibility(
     // Validate and ensure proper format
     const compatibilityResults: CompatibilityResults & { zodiac_signs: { person1: string; person2: string } } = {
       zodiac_signs: { 
-        person1: result.zodiac_signs?.person1 || "Неизвестно", 
-        person2: result.zodiac_signs?.person2 || "Неизвестно" 
+        person1: person1ZodiacSign,
+        person2: person2ZodiacSign
       },
       zodiac_compatibility: Math.max(0, Math.min(100, Math.round(result.zodiac_compatibility || 0))),
       elemental_compatibility: Math.max(0, Math.min(100, Math.round(result.elemental_compatibility || 0))),
@@ -139,6 +151,10 @@ export async function calculateCompatibility(
       emotional_compatibility: Math.max(0, Math.min(100, Math.round(result.emotional_compatibility || 0))),
       intellectual_compatibility: Math.max(0, Math.min(100, Math.round(result.intellectual_compatibility || 0))),
       overall_compatibility: Math.max(0, Math.min(100, Math.round(result.overall_compatibility || 0))),
+      compatibility_message: result.compatibility_message || "",
+      detailed_description: result.detailed_description || "",
+      lucky_colors: result.lucky_colors || [],
+      best_activities: result.best_activities || []
     };
 
     console.log("Final compatibility results:", compatibilityResults);
