@@ -74,6 +74,9 @@ export const compatibilityResultsSchema = z.object({
   }).optional(),
   lucky_colors: z.array(z.string()).optional(),
   best_activities: z.array(z.string()).optional(),
+  best_dates: z.array(z.string()).optional(),
+  best_dates_comment: z.string().optional(),
+  relationship_tips: z.string().optional(),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;

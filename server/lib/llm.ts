@@ -32,7 +32,9 @@ export async function calculateCompatibility(
   const person1ZodiacSign = getZodiacSign(person1Date);
   const person2ZodiacSign = getZodiacSign(person2Date);
   
-  const prompt = `Рассчитай совместимость между двумя людьми на основе их дат и времени рождения. Входные данные:
+  const prompt = `ВАЖНО: Верни ВСЕ поля из формата и примера ниже, даже если они пустые! Если не вернёшь все поля, результат будет считаться некорректным.
+
+Рассчитай совместимость между двумя людьми на основе их дат и времени рождения. Входные данные:
 
 - Человек 1: Дата рождения = ${person1Date}, Время рождения = ${person1Time}, Знак зодиака = ${person1ZodiacSign}
 - Человек 2: Дата рождения = ${person2Date}, Время рождения = ${person2Time}, Знак зодиака = ${person2ZodiacSign}
@@ -46,6 +48,10 @@ export async function calculateCompatibility(
 
 Для каждой категории предоставь подробное описание совместимости, объясняющее сильные и слабые стороны пары в этой области.
 
+Дополнительно:
+- Укажи лучшие даты для совместных дел (например, свиданий, путешествий, важных разговоров) на ближайший месяц на основе астрологии. Приведи 2-3 конкретные даты и коротко поясни почему они благоприятны.
+- Дай персональные советы для этой пары, как улучшить отношения, на что обратить внимание, как гармонизировать союз.
+
 Предоставь результат в следующем JSON формате:
 {
   "zodiac_compatibility": <процент>,
@@ -57,8 +63,30 @@ export async function calculateCompatibility(
   "compatibility_message": "<краткое общее описание совместимости>",
   "detailed_description": "<подробное описание совместимости, включая анализ каждой категории>",
   "lucky_colors": ["<цвет1>", "<цвет2>", "<цвет3>"],
-  "best_activities": ["<активность1>", "<активность2>", "<активность3>"]
+  "best_activities": ["<активность1>", "<активность2>", "<активность3>"],
+  "best_dates": ["<дата1>", "<дата2>", "<дата3>"],
+  "best_dates_comment": "<пояснение к выбору дат>",
+  "relationship_tips": "<советы для пары>"
 }
+
+Пример ответа:
+{
+  "zodiac_compatibility": 70,
+  "elemental_compatibility": 65,
+  "numerological_compatibility": 70,
+  "emotional_compatibility": 75,
+  "intellectual_compatibility": 80,
+  "overall_compatibility": 72,
+  "compatibility_message": "Ваша пара гармонична и перспективна.",
+  "detailed_description": "Пара отличается гармонией в эмоциональной сфере...",
+  "lucky_colors": ["синий", "зеленый", "белый"],
+  "best_activities": ["путешествия", "совместное обучение", "спорт"],
+  "best_dates": ["12.06.2024", "18.06.2024", "25.06.2024"],
+  "best_dates_comment": "В эти дни Луна и Венера благоприятствуют отношениям.",
+  "relationship_tips": "Больше разговаривайте друг с другом, поддерживайте инициативу партнера."
+}
+
+ОБЯЗАТЕЛЬНО верни все поля, даже если для некоторых нет информации — пусть будут пустые строки или пустые массивы. Если не вернёшь все поля, результат будет считаться некорректным.
 
 Пожалуйста, верни только JSON-объект в одну строку, без пояснений и лишнего текста.`;
 
@@ -140,7 +168,7 @@ export async function calculateCompatibility(
     }
 
     // Validate and ensure proper format
-    const compatibilityResults: CompatibilityResults & { zodiac_signs: { person1: string; person2: string } } = {
+    const compatibilityResults: CompatibilityResults & { zodiac_signs: { person1: string; person2: string }, best_dates?: string[], best_dates_comment?: string, relationship_tips?: string } = {
       zodiac_signs: { 
         person1: person1ZodiacSign,
         person2: person2ZodiacSign
@@ -154,7 +182,10 @@ export async function calculateCompatibility(
       compatibility_message: result.compatibility_message || "",
       detailed_description: result.detailed_description || "",
       lucky_colors: result.lucky_colors || [],
-      best_activities: result.best_activities || []
+      best_activities: result.best_activities || [],
+      best_dates: result.best_dates || [],
+      best_dates_comment: result.best_dates_comment || "",
+      relationship_tips: result.relationship_tips || ""
     };
 
     console.log("Final compatibility results:", compatibilityResults);

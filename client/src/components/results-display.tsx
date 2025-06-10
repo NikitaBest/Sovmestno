@@ -222,6 +222,45 @@ export function ResultsDisplay({ results, onRestart }: ResultsDisplayProps) {
         </Card>
       )}
 
+      {/* Best Dates for Activities */}
+      {results.best_dates && results.best_dates.length > 0 && (
+        <Card className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-100">
+          <CardContent className="p-6">
+            <div className="flex items-start">
+              <span className="text-2xl mr-3 mt-1">📅</span>
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-3">Лучшие даты для совместных дел</h4>
+                <div className="text-gray-700 text-sm mb-2">
+                  {results.best_dates.map((date, idx) => (
+                    <span key={date} className="inline-block mr-2 font-medium text-blue-700">{date}{idx < results.best_dates.length - 1 ? ',' : ''}</span>
+                  ))}
+                </div>
+                {results.best_dates_comment && (
+                  <div className="text-gray-600 text-xs italic">{results.best_dates_comment}</div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Relationship Tips */}
+      {results.relationship_tips && (
+        <Card className="bg-gradient-to-r from-yellow-50 to-pink-50 border border-yellow-100">
+          <CardContent className="p-6">
+            <div className="flex items-start">
+              <span className="text-2xl mr-3 mt-1">💡</span>
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-3">Советы для вашей пары</h4>
+                <div className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+                  {results.relationship_tips}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Action Buttons */}
       <div className="space-y-3 pt-6">
         <div className="grid grid-cols-2 gap-3">
