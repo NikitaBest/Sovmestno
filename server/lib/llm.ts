@@ -20,6 +20,49 @@ function getZodiacSign(date: string): string {
   return "Неизвестно";
 }
 
+function extractDeepContent(objOrStr: any, depth = 0): any {
+  if (depth > 15) return null; // защита от бесконечной рекурсии
+  let value = objOrStr;
+  if (typeof value === 'string') {
+    try {
+      value = JSON5.parse(value);
+    } catch {
+      return null;
+    }
+  }
+  // Если это объект с нужными полями — возвращаем
+  if (
+    value &&
+    typeof value === 'object' &&
+    typeof value.zodiac_compatibility !== 'undefined'
+  ) {
+    return value;
+  }
+  // Если есть поле content — парсим его дальше
+  if (value && typeof value === 'object' && typeof value.content === 'string') {
+    return extractDeepContent(value.content, depth + 1);
+  }
+  // Если есть поле message — парсим его дальше
+  if (value && typeof value === 'object' && value.message) {
+    return extractDeepContent(value.message, depth + 1);
+  }
+  // Если есть поле choices — парсим каждый элемент
+  if (value && typeof value === 'object' && Array.isArray(value.choices)) {
+    for (const choice of value.choices) {
+      const found = extractDeepContent(choice, depth + 1);
+      if (found) return found;
+    }
+  }
+  // Если это массив — парсим каждый элемент
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      const found = extractDeepContent(item, depth + 1);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
 export async function calculateCompatibility(
   person1Date: string,
   person1Time: string,
@@ -145,25 +188,9 @@ export async function calculateCompatibility(
 
     let result;
     try {
-      let jsonStr;
-      if (content.trim().startsWith('{') && content.trim().endsWith('}')) {
-        jsonStr = content.trim();
-      } else {
-        const first = content.indexOf('{');
-        const last = content.lastIndexOf('}');
-        if (first === -1 || last === -1 || last <= first) {
-          throw new Error("No JSON found in response");
-        }
-        jsonStr = content.substring(first, last + 1);
-      }
-      // Aggressively clean: remove all newlines, extra spaces, and any comma before a closing bracket
-      jsonStr = jsonStr.replace(/\n/g, '').replace(/\s{2,}/g, ' ').replace(/,\s*([}\]])/g, '$1');
-      console.log("Final jsonStr for parsing:", jsonStr);
-      try {
-        result = JSON5.parse(jsonStr);
-      } catch (json5err) {
-        // fallback to standard JSON.parse if JSON5 fails
-        result = JSON.parse(jsonStr);
+      result = extractDeepContent(content);
+      if (!result) {
+        throw new Error("Не удалось извлечь результат совместимости из ответа нейросети");
       }
       console.log("Parsed result:", result);
     } catch (e) {

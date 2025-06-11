@@ -53,7 +53,7 @@ export default function CompatibilityPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                <span className="text-xl">🔮</span>
+                <span className="text-xl">❤️</span>
               </div>
               <div>
                 <h1 className="text-xl font-bold">Совместимость</h1>
